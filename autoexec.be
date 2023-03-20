@@ -1,7 +1,7 @@
 # Input List
+# 1 = Thermostat Livingroom
 # 2 = Thermostat Kitchen
 # 3 = Thermostat Appartment
-# 1 = Thermostat Livingroom
 # 7 = Cool/Heat Switch
 # 8 = Gas Boiler Override Switch
 
