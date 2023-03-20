@@ -3,3 +3,5 @@ This is a berry script for Tasmota controlling a heat pump and gas boiler with z
 https://aliexpress.com/item/4001232791244.html
 
 https://github.com/arendst/Tasmota/pull/17032
+
+https://github.com/arendst/Tasmota/pull/18223
