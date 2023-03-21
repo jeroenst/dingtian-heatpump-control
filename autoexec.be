@@ -18,6 +18,8 @@ var mode_heat_old = false;
 var initialized = false;
 var pump_run = false
 
+# run_pump sets variable pump_run on for 30 seconds each 24 hours
+# to prevent the pumps getting stuck
 def run_pump()
     if (pump_run)
         tasmota.set_timer(86400000,run_pump) 
@@ -28,6 +30,8 @@ def run_pump()
     end
 end
 
+# control_house_climate runs every second to check inputs
+# and control outputs for heating or cooling different zones
 def control_house_climate()
     var inputs = tasmota.get_switches()
     var outputs = tasmota.get_power()
