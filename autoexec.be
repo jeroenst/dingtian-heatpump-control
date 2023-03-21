@@ -16,8 +16,19 @@
 var ch_override_old = false;
 var mode_heat_old = false;
 var initialized = false;
+var pump_run = false
 
-def every_second()
+def run_pump()
+    if (pump_run)
+        tasmota.set_timer(86400000,run_pump) 
+        pump_run = false
+    else
+        tasmota.set_timer(30000,run_pump)
+        pump_run = true
+    end
+end
+
+def control_house_climate()
     var inputs = tasmota.get_switches()
     var outputs = tasmota.get_power()
     var thermostat_livingroom = !inputs[0]
@@ -27,6 +38,8 @@ def every_second()
     var ch_override = !inputs[7]
 
     var thermostat_active = false
+
+
 
     if (ch_override != ch_override_old || !initialized)
         if (ch_override)
@@ -56,9 +69,16 @@ def every_second()
             tasmota.set_power(0, true)
         end
     else
-        if (outputs[0] == true && !ch_override) 
-            print ("Livingroom Deactivated")
-            tasmota.set_power(0, false)
+        if (pump_run)
+            if (outputs[0] == false)
+                print ("Livingroom Pump Run")
+                tasmota.set_power(0, true)
+            end
+        else 
+            if (outputs[0] == true) 
+                print ("Livingroom Deactivated")
+                tasmota.set_power(0, false)
+            end
         end
     end
     
@@ -70,9 +90,16 @@ def every_second()
             tasmota.set_power(1, true)
         end
     else
-        if (outputs[1] == true && !ch_override) 
-            print ("Kitchen Deactivated")
-            tasmota.set_power(1, false)
+        if (pump_run)
+            if (outputs[1] == false)
+                print ("Kitchen Pump Run")
+                tasmota.set_power(1, true)
+            end
+        else 
+            if (outputs[1] == true) 
+                print ("Kitchen Deactivated")
+                tasmota.set_power(1, false)
+            end
         end
     end
     
@@ -83,9 +110,16 @@ def every_second()
             tasmota.set_power(2, true)
         end
     else
-        if (outputs[2] == true && !ch_override) 
-            print ("Appartment Deactivated")
-            tasmota.set_power(2, false)
+        if (pump_run)
+            if (outputs[2] == false)
+                print ("Appartment Pump Run")
+                tasmota.set_power(2, true)
+            end
+        else 
+            if (outputs[2] == true) 
+                print ("Appartment Deactivated")
+                tasmota.set_power(2, false)
+            end
         end
     end
     
@@ -148,11 +182,11 @@ def every_second()
     else led = 1
     end
     gpio.digital_write(2,led)
-    tasmota.set_timer(1000,every_second)
+    tasmota.set_timer(1000,control_house_climate)
 
     initialized=true
 end
 
-tasmota.set_timer(1000,every_second)
 
-
+control_house_climate()
+run_pump()
