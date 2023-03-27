@@ -33,12 +33,12 @@ end
 def control_house_climate()
     var inputs = tasmota.get_switches()
     var outputs = tasmota.get_power()
-    var thermostat_livingroom = !inputs[0]
-    var thermostat_kitchen = !inputs[1]
-    var thermostat_appartment = !inputs[2]
-    var gas_request = !inputs[3]
-    var mode_heat = inputs[6]
-    var gas_override = !inputs[7]
+    var thermostat_livingroom = inputs[0]
+    var thermostat_kitchen = inputs[1]
+    var thermostat_appartment = inputs[2]
+    var gas_request = inputs[3]
+    var mode_heat = !inputs[6]
+    var gas_override = inputs[7]
 
     var thermostat_active = false
     var invalid_mode = false
